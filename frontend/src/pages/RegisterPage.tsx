@@ -74,10 +74,6 @@ export const RegisterPage: React.FC = () => {
   const { register: authRegister, loginWithGoogle, user } = useAuth() as any;
   const [googleError, setGoogleError] = useState<string | null>(null);
 
-  if (user) {
-    return <Navigate to="/dashboard" replace />;
-  }
-
   const {
     register,
     handleSubmit,
@@ -89,6 +85,10 @@ export const RegisterPage: React.FC = () => {
   });
 
   const watchedPassword = watch('password');
+
+  if (user) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   const onSubmit = async (data: SignupFormData) => {
     setIsLoading(true);

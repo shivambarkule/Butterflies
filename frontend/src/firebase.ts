@@ -3,13 +3,13 @@ import { getAnalytics } from "firebase/analytics";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCiKj5jNyN0f4imzP7BEJ3y1V00BJgUgp0",
-  authDomain: "butterflies-c1d94.firebaseapp.com",
-  projectId: "butterflies-c1d94",
-  storageBucket: "butterflies-c1d94.appspot.com", // fixed typo
-  messagingSenderId: "613937001862",
-  appId: "1:613937001862:web:52d91e923fe741f1206807",
-  measurementId: "G-JY726ELM05"
+  apiKey: "AIzaSyBF-GSsnayoyAfRhX29TnCErXD4N4pT3pk",
+  authDomain: "labyrinth-db7a0.firebaseapp.com",
+  projectId: "labyrinth-db7a0",
+  storageBucket: "labyrinth-db7a0.appspot.com", // fixed to .com
+  messagingSenderId: "316561291107",
+  appId: "1:316561291107:web:339b5ea3341d774f3a0556",
+  measurementId: "G-JZZX7J7C73"
 };
 
 // Initialize Firebase
