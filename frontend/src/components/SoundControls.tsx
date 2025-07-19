@@ -9,17 +9,11 @@ import {
   TreePine, 
   CloudRain, 
   BookOpen,
-  Play,
-  Pause,
-  SkipBack,
-  SkipForward,
   Settings,
   X,
   Waves,
   Bell,
   Zap,
-  Target,
-  Trophy,
   Star
 } from 'lucide-react';
 import { useSound } from '../contexts/SoundContext';

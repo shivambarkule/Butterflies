@@ -13,107 +13,29 @@ import {
   Gift,
   CheckCircle,
   XCircle,
-  Play,
-  Pause,
-  RotateCcw,
   TrendingUp,
   Calendar,
   BookOpen,
   Brain,
   Rocket,
-  Sparkles,
-  Heart,
-  Gem,
-  Diamond,
-  Crown as CrownIcon,
-  Shield,
-  Sword,
-  Castle,
-  Flag,
-  Compass,
-  Map,
-  Navigation,
-  Home,
-  Settings,
-  Plus,
-  Minus,
-  Edit,
-  Trash,
-  Eye,
-  EyeOff,
-  Share,
-  Download,
-  Upload,
-  RefreshCw,
-  BarChart3,
-  PieChart,
-  Activity,
-  Timer,
-  Hourglass,
-  CalendarDays,
-  CalendarCheck,
-  CalendarX,
-  CalendarPlus,
-  CalendarMinus,
-  CalendarRange,
-  CalendarSearch,
-  CalendarClock,
-  CalendarHeart,
   X,
   MessageCircle,
   Phone,
   Video,
   Mic,
   MicOff,
-  Volume2,
-  VolumeX,
   Camera,
   CameraOff,
   Monitor,
-  MonitorOff,
-  Wifi,
-  WifiOff,
-  Battery,
-  BatteryCharging,
-  Signal,
-  SignalHigh,
-  SignalMedium,
-  SignalLow,
-  Bell,
-  BellOff,
   Search,
-  Filter,
-  SortAsc,
-  SortDesc,
-  MoreHorizontal,
-  MoreVertical,
-  ChevronLeft,
-  ChevronRight,
-  ChevronUp,
-  ChevronDown,
-  ArrowLeft,
-  ArrowRight,
-  ArrowUp,
-  ArrowDown,
-  ExternalLink,
-  Link,
-  Unlink,
-  Lock,
-  Unlock,
-  Key,
   User,
   UserPlus,
-  UserMinus,
-  UserCheck,
-  UserX,
-  UserCog,
-  UserCheck2,
-  UserX2,
-  Users2,
-  UserRound,
-  UserSquare,
-  UserCircle,
-  Flame
+  Flame,
+  Plus,
+  Play,
+  Shield,
+  Share,
+  Eye
 } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import { useSound } from '../contexts/SoundContext';
@@ -251,7 +173,7 @@ export const SocialSystem: React.FC<SocialSystemProps> = ({ isOpen, onClose }) =
   const [isVideoOn, setIsVideoOn] = useState(false);
   const [isScreenSharing, setIsScreenSharing] = useState(false);
 
-  const { mode, timeOfDay, season, weather, subject: currentSubject } = useTheme();
+  const { } = useTheme();
   const { playSfx, playNotification } = useSound();
 
   // Sample data
@@ -515,7 +437,7 @@ export const SocialSystem: React.FC<SocialSystemProps> = ({ isOpen, onClose }) =
           : g
       ));
       playSfx('success');
-      playNotification('Joined study group!');
+      playNotification('success');
     }
   };
 
@@ -555,7 +477,7 @@ export const SocialSystem: React.FC<SocialSystemProps> = ({ isOpen, onClose }) =
         chatMessages: [...prev.chatMessages, message]
       } : null);
       setChatMessage('');
-      playSfx('message');
+      playSfx('notification');
     }
   };
 
@@ -571,7 +493,7 @@ export const SocialSystem: React.FC<SocialSystemProps> = ({ isOpen, onClose }) =
     } else {
       // Fallback: copy to clipboard
       navigator.clipboard.writeText(shareText);
-      playNotification('Achievement shared!');
+      playNotification('success');
     }
     playSfx('success');
   };

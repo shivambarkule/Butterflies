@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
@@ -14,12 +14,11 @@ import {
   Users,
   Trophy,
   Target,
-  Zap,
   Sparkles
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
-import { useSound } from '../contexts/SoundContext';
+
 import { GlassCard } from '../components/GlassCard';
 import { AnimatedBackground } from '../components/AnimatedBackground';
 import { FloatingShapes } from '../components/FloatingShapes';
@@ -45,7 +44,7 @@ export const DashboardPage: React.FC = () => {
   const [joinCode, setJoinCode] = useState('');
   const [joinStatus, setJoinStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [joinMessage, setJoinMessage] = useState('');
-  const [unreadNotifications, setUnreadNotifications] = useState(2);
+  const [unreadNotifications] = useState(2);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showLoadingDemo, setShowLoadingDemo] = useState(false);
   const [loadingType, setLoadingType] = useState<'subject' | 'progress' | 'success' | 'error'>('subject');

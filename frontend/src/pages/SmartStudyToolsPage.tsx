@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { GlassCard } from '../components/GlassCard';
 import { AnimatedBackground } from '../components/AnimatedBackground';
 import { FloatingShapes } from '../components/FloatingShapes';
@@ -18,7 +18,6 @@ import {
   Brain, 
   Mic, 
   Bell, 
-  X,
   Target,
   TrendingUp,
   Zap,

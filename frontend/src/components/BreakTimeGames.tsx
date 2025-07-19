@@ -1,11 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Play, 
-  Pause, 
-  RotateCcw, 
   Trophy, 
-  Star, 
   Target, 
   Zap, 
   Palette, 
@@ -99,7 +95,8 @@ export const BreakTimeGames: React.FC<BreakTimeGamesProps> = ({ onClose }) => {
   // Typing Test State
   const [typingWord, setTypingWord] = useState('');
   const [typingInput, setTypingInput] = useState('');
-  const [typingWPM, setTypingWPM] = useState(0);
+    const [typingWPM, setTypingWPM] = useState(0);
+  const [typingScore, setTypingScore] = useState(0);
   const [typingAccuracy, setTypingAccuracy] = useState(100);
   const [typingStartTime, setTypingStartTime] = useState<number | null>(null);
   const [typingTime, setTypingTime] = useState(60);
@@ -562,7 +559,7 @@ export const BreakTimeGames: React.FC<BreakTimeGamesProps> = ({ onClose }) => {
             drag
             dragMomentum={false}
             dragElastic={0.1}
-            onDragEnd={(e, info) => {
+            onDragEnd={(_e, info) => {
               const targetY = info.point.y;
               const targetX = info.point.x;
               

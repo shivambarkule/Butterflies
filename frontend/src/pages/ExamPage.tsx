@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { GlassCard } from '../components/GlassCard';
-import { FileText, Trophy, CheckCircle } from 'lucide-react';
+import { Trophy } from 'lucide-react';
 import { AnimatedBackground } from '../components/AnimatedBackground';
 import { FloatingShapes } from '../components/FloatingShapes';
 import { Helmet } from 'react-helmet-async';

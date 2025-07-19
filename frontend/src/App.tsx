@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './contexts/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
@@ -42,8 +42,8 @@ function App() {
   const [gamificationOpen, setGamificationOpen] = useState(false);
   const [socialOpen, setSocialOpen] = useState(false);
   const [interactiveBackgroundsActive, setInteractiveBackgroundsActive] = useState(false);
-  const [backgroundIntensity, setBackgroundIntensity] = useState<'low' | 'medium' | 'high'>('medium');
-  const [backgroundTheme, setBackgroundTheme] = useState<'study' | 'creative' | 'nature' | 'space' | 'ocean' | 'forest' | 'desert' | 'arctic'>('study');
+  const [backgroundIntensity] = useState<'low' | 'medium' | 'high'>('medium');
+  const [backgroundTheme] = useState<'study' | 'creative' | 'nature' | 'space' | 'ocean' | 'forest' | 'desert' | 'arctic'>('study');
 
   // Event listeners for modal controls
   useEffect(() => {

@@ -6,14 +6,7 @@ import {
   Star, 
   Zap, 
   Target, 
-  Clock, 
-  BookOpen, 
-  Award,
-  TrendingUp,
-  Crown,
-  Shield,
-  Sparkles,
-  X
+  Shield
 } from 'lucide-react';
 import { GlassCard } from './GlassCard';
 import { useSound } from '../contexts/SoundContext';
@@ -41,7 +34,7 @@ interface SubjectMastery {
 }
 
 export const AchievementSystem: React.FC = () => {
-  const { playAchievement, playNotification } = useSound();
+  const { playNotification } = useSound();
   const [achievements, setAchievements] = useState<Achievement[]>([
     // Streak Achievements
     {
@@ -263,7 +256,7 @@ export const AchievementSystem: React.FC = () => {
     }
   ]);
 
-  const [subjectMastery, setSubjectMastery] = useState<SubjectMastery[]>([
+  const [subjectMastery] = useState<SubjectMastery[]>([
     { subject: 'Mathematics', progress: 65, maxProgress: 100, level: 6, color: '#FF6B6B' },
     { subject: 'Science', progress: 42, maxProgress: 100, level: 4, color: '#4ECDC4' },
     { subject: 'English', progress: 78, maxProgress: 100, level: 7, color: '#45B7D1' },
@@ -271,12 +264,12 @@ export const AchievementSystem: React.FC = () => {
     { subject: 'Geography', progress: 23, maxProgress: 100, level: 2, color: '#FFEAA7' }
   ]);
 
-  const [currentStreak, setCurrentStreak] = useState(5);
-  const [totalStudyHours, setTotalStudyHours] = useState(12.5);
-  const [perfectScores, setPerfectScores] = useState(3);
+  const [currentStreak] = useState(5);
+  const [totalStudyHours] = useState(12.5);
+  const [perfectScores] = useState(3);
   const [showAchievement, setShowAchievement] = useState<Achievement | null>(null);
   const [showAchievements, setShowAchievements] = useState(false);
-  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [soundEnabled] = useState(true);
 
   // Simulate achievement unlocks
   useEffect(() => {
@@ -377,15 +370,7 @@ export const AchievementSystem: React.FC = () => {
     }
   };
 
-  const getRarityBg = (rarity: string) => {
-    switch (rarity) {
-      case 'common': return 'bg-gray-500/20';
-      case 'rare': return 'bg-blue-500/20';
-      case 'epic': return 'bg-purple-500/20';
-      case 'legendary': return 'bg-yellow-500/20';
-      default: return 'bg-gray-500/20';
-    }
-  };
+
 
   const getCategoryIcon = (category: string) => {
     switch (category) {

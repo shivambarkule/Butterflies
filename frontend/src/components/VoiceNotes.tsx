@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mic, Square, Play, Pause, Trash2, Save, Download, X, Volume2 } from 'lucide-react';
+import { Mic, Square, Play, Pause, Trash2, Download, X, Volume2 } from 'lucide-react';
 import { GlassCard } from './GlassCard';
 import { playNotificationSound } from '../utils/soundEffects';
 

@@ -1,19 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Zap, 
-  Code, 
-  Eye, 
-  Star, 
-  Heart, 
-  Trophy, 
   X, 
-  Volume2, 
-  VolumeX,
-  Sparkles,
-  Brain,
-  Target,
-  Lightbulb
+  Sparkles
 } from 'lucide-react';
 import { GlassCard } from './GlassCard';
 import { useSound } from '../contexts/SoundContext';

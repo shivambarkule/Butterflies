@@ -1,7 +1,8 @@
 // Sound effects utility
-class SoundManager {
+class SoundEffects {
   private audioContext: AudioContext | null = null;
-  private sounds: Map<string, AudioBuffer> = new Map();
+  private gainNode: GainNode | null = null;
+
   private isEnabled = true;
 
   constructor() {
@@ -150,7 +151,7 @@ class SoundManager {
 }
 
 // Create singleton instance
-export const soundManager = new SoundManager();
+export const soundManager = new SoundEffects();
 
 // Export individual functions for convenience
 export const playTypingSound = () => soundManager.playTypingSound();
