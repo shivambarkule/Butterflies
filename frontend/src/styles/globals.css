@@ -10,11 +10,26 @@
   --glass-border: rgba(255, 255, 255, 0.2);
   --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   --neon-glow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor;
+  
+  /* Dynamic theme variables */
+  --color-primary: #667eea;
+  --color-secondary: #764ba2;
+  --color-accent: #f093fb;
+  --color-background: #0f0f23;
+  --color-surface: #1a1a2e;
+  --color-text: #ffffff;
+  --color-text-secondary: #a0a0a0;
+  --color-border: #2a2a3e;
+  --color-glass: rgba(26, 26, 46, 0.8);
+  --color-glass-border: rgba(42, 42, 62, 0.5);
+  --gradient-primary: from-purple-400 to-pink-400;
+  --gradient-secondary: from-pink-400 to-indigo-400;
 }
 
 /* Base Styles */
 * {
   box-sizing: border-box;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 html {
@@ -22,6 +37,7 @@ html {
 }
 
 body {
+  background: #181c24 !important;
   font-family: 'Inter', system-ui, sans-serif;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -58,6 +74,15 @@ body {
   
   .glass-card {
     @apply relative overflow-hidden rounded-2xl border border-glass-200 bg-glass-100/20 backdrop-blur-xl shadow-glass;
+  }
+  
+  /* Dynamic gradient classes */
+  .bg-gradient-dynamic {
+    background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+  }
+  
+  .bg-gradient-dynamic-secondary {
+    background: linear-gradient(to right, var(--color-secondary), var(--color-accent));
   }
   
   .glass-button {
@@ -105,12 +130,118 @@ body {
     background-size: 200% 200%;
     animation: gradient 3s ease infinite;
   }
+  
+  /* Theme-specific animations */
+  .theme-pulse {
+    animation: theme-pulse 2s ease-in-out infinite;
+  }
+  
+  /* Weather effect transitions */
+  .weather-transition {
+    transition: all 0.5s ease-in-out;
+  }
 }
 
 /* Noise Texture */
 .bg-noise {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   opacity: 0.05;
+}
+
+/* Theme-specific animations */
+@keyframes theme-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Subject-specific theme classes */
+.theme-math {
+  --color-primary: #667eea;
+  --color-secondary: #764ba2;
+  --color-accent: #f093fb;
+}
+
+.theme-science {
+  --color-primary: #4ecdc4;
+  --color-secondary: #45b7d1;
+  --color-accent: #96ceb4;
+}
+
+.theme-english {
+  --color-primary: #ff6b6b;
+  --color-secondary: #ff8b94;
+  --color-accent: #ffd3b6;
+}
+
+.theme-history {
+  --color-primary: #ffd93d;
+  --color-secondary: #ff6b6b;
+  --color-accent: #6bcf7f;
+}
+
+.theme-geography {
+  --color-primary: #6bcf7f;
+  --color-secondary: #4ecdc4;
+  --color-accent: #ffe66d;
+}
+
+/* Time-based theme classes */
+.theme-morning {
+  --gradient-primary: from-orange-400 to-pink-400;
+  --gradient-secondary: from-yellow-400 to-orange-400;
+}
+
+.theme-afternoon {
+  --gradient-primary: from-blue-400 to-cyan-400;
+  --gradient-secondary: from-green-400 to-blue-400;
+}
+
+.theme-evening {
+  --gradient-primary: from-purple-400 to-pink-400;
+  --gradient-secondary: from-pink-400 to-red-400;
+}
+
+.theme-night {
+  --gradient-primary: from-indigo-400 to-purple-400;
+  --gradient-secondary: from-purple-400 to-pink-400;
+}
+
+/* Season-based theme classes */
+.theme-spring {
+  --color-accent: #a8e6cf;
+}
+
+.theme-summer {
+  --color-accent: #4ecdc4;
+}
+
+.theme-autumn {
+  --color-accent: #ff8b94;
+}
+
+.theme-winter {
+  --color-accent: #667eea;
+}
+
+/* Weather-based theme classes */
+.theme-sunny {
+  --color-primary: #ffe66d;
+}
+
+.theme-cloudy {
+  --color-primary: #b8c5d6;
+}
+
+.theme-rainy {
+  --color-primary: #667eea;
+}
+
+.theme-snowy {
+  --color-primary: #ffffff;
+}
+
+.theme-stormy {
+  --color-primary: #4a5568;
 }
 
 /* Focus Styles */
@@ -199,4 +330,64 @@ body {
   .animate-float-fast {
     animation: none;
   }
+} 
+
+.cursor-highlight {
+  color: #fff !important;
+  text-shadow: 0 0 8px #000, 0 0 2px #000, 0 0 1px #000;
+  transition: color 0.2s, text-shadow 0.2s;
+}
+
+/* Sound Controls Slider Styling */
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.slider::-webkit-slider-track {
+  background: rgba(55, 65, 81, 0.5);
+  height: 8px;
+  border-radius: 4px;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+.slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.slider::-moz-range-track {
+  background: rgba(55, 65, 81, 0.5);
+  height: 8px;
+  border-radius: 4px;
+  border: none;
+}
+
+.slider::-moz-range-thumb {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+.slider::-moz-range-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 } 

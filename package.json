@@ -32,6 +32,8 @@
   "author": "Student Exam Portal Team",
   "license": "MIT",
   "dependencies": {
-    "firebase": "^11.10.0"
+    "firebase": "^11.10.0",
+    "gsap": "^3.13.0",
+    "webgl-fluid": "^0.3.9"
   }
 }

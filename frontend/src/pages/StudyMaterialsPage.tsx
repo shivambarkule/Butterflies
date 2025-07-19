@@ -1,90 +1,93 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { GlassCard } from '../components/GlassCard';
-import { BookOpen, FileText, Video, Search } from 'lucide-react';
+import { BookOpen, Search, Filter, Plus } from 'lucide-react';
+import { AnimatedBackground } from '../components/AnimatedBackground';
+import { FloatingShapes } from '../components/FloatingShapes';
+import { Helmet } from 'react-helmet-async';
 
-const mockMaterials = [
-  { id: 1, type: 'pdf', title: 'Calculus Notes', desc: 'Comprehensive notes for Calculus.', link: '#', category: 'Mathematics' },
-  { id: 2, type: 'video', title: 'Physics: Motion', desc: 'Video lecture on motion.', link: '#', category: 'Physics' },
-  { id: 3, type: 'link', title: 'English Literature Guide', desc: 'External resource for literature.', link: '#', category: 'English' },
-  { id: 4, type: 'pdf', title: 'Organic Chemistry', desc: 'PDF notes for organic chemistry.', link: '#', category: 'Chemistry' },
-];
-
-const categories = ['All', 'Mathematics', 'Physics', 'English', 'Chemistry'];
-
-const icons = {
-  pdf: <FileText className="w-6 h-6 text-purple-400" />,
-  video: <Video className="w-6 h-6 text-pink-400" />,
-  link: <BookOpen className="w-6 h-6 text-blue-400" />,
-};
-
-const StudyMaterialsPage: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  const [search, setSearch] = useState('');
-
-  const filtered = mockMaterials.filter(m =>
-    (selectedCategory === 'All' || m.category === selectedCategory) &&
-    (m.title.toLowerCase().includes(search.toLowerCase()) || m.desc.toLowerCase().includes(search.toLowerCase()))
-  );
+export const StudyMaterialsPage: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showFilters, setShowFilters] = useState(false);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 40 }}
-      className="min-h-screen p-6 bg-gradient-to-br from-purple-100/60 to-blue-100/60 flex flex-col items-center"
-    >
-      <h1 className="text-3xl font-bold mb-6 text-purple-700 drop-shadow-lg flex items-center gap-2">
-        <BookOpen className="w-7 h-7 text-purple-400" /> Study Materials
-      </h1>
-      <div className="flex flex-wrap gap-3 mb-6">
-        {categories.map(cat => (
-          <button
-            key={cat}
-            className={`px-4 py-2 rounded-full font-semibold text-sm transition-all duration-200 ${selectedCategory === cat ? 'bg-purple-400 text-white shadow-lg' : 'bg-white/40 text-purple-700 hover:bg-purple-200/60'}`}
-            onClick={() => setSelectedCategory(cat)}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
-      <div className="relative w-full max-w-xl mb-8">
-        <input
-          type="text"
-          placeholder="Search study materials..."
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          className="w-full py-3 pl-12 pr-4 rounded-xl bg-glass-100/60 border border-glass-200 text-purple-800 placeholder-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-300 shadow"
-        />
-        <Search className="absolute left-3 top-3 w-5 h-5 text-purple-400" />
-      </div>
-      <div className="w-full max-w-3xl grid gap-6">
-        {filtered.length === 0 && (
-          <GlassCard className="p-8 text-center text-gray-400 text-lg">No study materials found.</GlassCard>
-        )}
-        {filtered.map((m) => (
-          <motion.a
-            key={m.id}
-            href={m.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: 'spring', stiffness: 300 }}
-          >
-            <GlassCard className="flex items-center gap-4 p-6 cursor-pointer hover:bg-purple-100/40 transition">
-              <div>{icons[m.type as keyof typeof icons]}</div>
-              <div>
-                <div className="text-lg font-semibold text-purple-800">{m.title}</div>
-                <div className="text-sm text-gray-500">{m.desc}</div>
-                <div className="text-xs text-gray-400 mt-1">{m.category}</div>
-              </div>
-            </GlassCard>
-          </motion.a>
-        ))}
-      </div>
-    </motion.div>
-  );
-};
+    <div className="min-h-screen relative overflow-hidden">
+      <Helmet>
+        <title>Study Materials - Butterflies</title>
+      </Helmet>
+      
+      <AnimatedBackground />
+      <FloatingShapes />
+      
+      <div className="relative z-10 p-6">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="mb-8"
+        >
+          <h1 className="text-3xl font-bold text-white mb-2">Study Materials</h1>
+          <p className="text-gray-300">Access your course materials and resources</p>
+        </motion.div>
 
-export default StudyMaterialsPage; 
+        {/* Search and Filters */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="mb-6"
+        >
+          <GlassCard className="p-6">
+            <div className="flex flex-col lg:flex-row gap-4">
+              {/* Search */}
+              <div className="flex-1 relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Search study materials..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 bg-glass-100/50 backdrop-blur-md rounded-xl border border-glass-200 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-300"
+                />
+              </div>
+
+              {/* Filter Toggle */}
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setShowFilters(!showFilters)}
+                className="px-6 py-3 bg-glass-100/50 backdrop-blur-md rounded-xl border border-glass-200 text-white hover:bg-glass-200/50 transition-all duration-300 flex items-center space-x-2"
+              >
+                <Filter className="w-5 h-5" />
+                <span>Filters</span>
+              </motion.button>
+            </div>
+          </GlassCard>
+        </motion.div>
+
+        {/* Empty State */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="text-center py-16"
+        >
+          <GlassCard className="p-12 max-w-md mx-auto">
+            <div className="w-24 h-24 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full flex items-center justify-center mx-auto mb-6">
+              <BookOpen className="w-12 h-12 text-white" />
+            </div>
+            <h3 className="text-2xl font-semibold text-white mb-4">No Study Materials</h3>
+            <p className="text-gray-300 mb-8">
+              No study materials are available yet. Materials will appear here once you join classes and teachers upload them.
+            </p>
+            <div className="flex items-center justify-center space-x-2 text-blue-400">
+              <Plus className="w-5 h-5" />
+              <span className="font-medium">Join classes to access materials</span>
+            </div>
+          </GlassCard>
+        </motion.div>
+      </div>
+    </div>
+  );
+}; 

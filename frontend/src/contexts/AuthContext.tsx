@@ -29,6 +29,7 @@ interface AuthContextType {
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (userData: any) => Promise<void>;
+  loginWithGoogle: () => Promise<void>;
   logout: () => void;
   updateUser: (userData: Partial<User>) => void;
 }
@@ -105,6 +106,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setLoading(true);
     try {
       await signInWithPopup(auth, googleProvider);
+      // Navigation will be handled automatically by onAuthStateChanged
+      // and the ProtectedRoute component will redirect to /dashboard
     } catch (error: any) {
       throw new Error(error.message || 'Google sign-in failed');
     } finally {
@@ -123,14 +126,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const value: AuthContextType & { loginWithGoogle: () => Promise<void> } = {
+  const value: AuthContextType = {
     user,
     loading,
     login,
     register,
+    loginWithGoogle,
     logout,
     updateUser,
-    loginWithGoogle,
   };
 
   return (

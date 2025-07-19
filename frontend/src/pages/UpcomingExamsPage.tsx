@@ -1,53 +1,55 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { GlassCard } from '../components/GlassCard';
+import { Calendar, Plus } from 'lucide-react';
+import { AnimatedBackground } from '../components/AnimatedBackground';
+import { FloatingShapes } from '../components/FloatingShapes';
+import { Helmet } from 'react-helmet-async';
 
-const mockUpcomingExams = [
-  { id: 2, name: 'Physics Quiz', date: '2024-07-15', status: 'Upcoming' },
-  { id: 3, name: 'Chemistry Midterm', date: '2024-07-20', status: 'Upcoming' },
-];
-
-const getCountdown = (dateStr: string) => {
-  const examDate = new Date(dateStr);
-  const now = new Date();
-  const diff = examDate.getTime() - now.getTime();
-  if (diff <= 0) return 'Started';
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  return `${days}d ${hours}h`;
-};
-
-const UpcomingExamsPage: React.FC = () => {
+export const UpcomingExamsPage: React.FC = () => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 40 }}
-      className="min-h-screen p-6 bg-gradient-to-br from-green-100/60 to-blue-100/60 flex flex-col items-center"
-    >
-      <h1 className="text-3xl font-bold mb-6 text-green-700 drop-shadow-lg">Upcoming Exams</h1>
-      <div className="w-full max-w-2xl grid gap-6">
-        {mockUpcomingExams.map((exam) => (
-          <motion.div
-            key={exam.id}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: 'spring', stiffness: 300 }}
-          >
-            <GlassCard className="flex justify-between items-center p-6 cursor-pointer hover:bg-green-100/40 transition">
-              <div>
-                <div className="text-xl font-semibold text-blue-800">{exam.name}</div>
-                <div className="text-sm text-gray-500">Date: {exam.date}</div>
-              </div>
-              <span className="px-3 py-1 rounded-full text-xs font-bold bg-yellow-200 text-yellow-800 animate-pulse">
-                {getCountdown(exam.date)}
-              </span>
-            </GlassCard>
-          </motion.div>
-        ))}
-      </div>
-    </motion.div>
-  );
-};
+    <div className="min-h-screen relative overflow-hidden">
+      <Helmet>
+        <title>Upcoming Exams - Butterflies</title>
+      </Helmet>
+      
+      <AnimatedBackground />
+      <FloatingShapes />
+      
+      <div className="relative z-10 p-6">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="mb-8"
+        >
+          <h1 className="text-3xl font-bold text-white mb-2">Upcoming Exams</h1>
+          <p className="text-gray-300">Stay prepared for your scheduled exams</p>
+        </motion.div>
 
-export default UpcomingExamsPage; 
+        {/* Empty State */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="text-center py-16"
+        >
+          <GlassCard className="p-12 max-w-md mx-auto">
+            <div className="w-24 h-24 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Calendar className="w-12 h-12 text-white" />
+            </div>
+            <h3 className="text-2xl font-semibold text-white mb-4">No Upcoming Exams</h3>
+            <p className="text-gray-300 mb-8">
+              You don't have any upcoming exams scheduled. Exams will appear here once you join classes and teachers schedule them.
+            </p>
+            <div className="flex items-center justify-center space-x-2 text-blue-400">
+              <Plus className="w-5 h-5" />
+              <span className="font-medium">Join classes to see scheduled exams</span>
+            </div>
+          </GlassCard>
+        </motion.div>
+      </div>
+    </div>
+  );
+}; 

@@ -1,44 +1,55 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { GlassCard } from '../components/GlassCard';
-// TODO: Import ExamList or similar component if available
+import { FileText, Plus } from 'lucide-react';
+import { AnimatedBackground } from '../components/AnimatedBackground';
+import { FloatingShapes } from '../components/FloatingShapes';
+import { Helmet } from 'react-helmet-async';
 
-const mockExams = [
-  { id: 1, name: 'Mathematics Final', date: '2024-07-10', status: 'Completed' },
-  { id: 2, name: 'Physics Quiz', date: '2024-07-15', status: 'Upcoming' },
-  { id: 3, name: 'Chemistry Midterm', date: '2024-07-20', status: 'Upcoming' },
-  { id: 4, name: 'English Literature', date: '2024-06-30', status: 'Completed' },
-];
-
-const TotalExamsPage: React.FC = () => {
+export const TotalExamsPage: React.FC = () => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 40 }}
-      className="min-h-screen p-6 bg-gradient-to-br from-blue-100/60 to-purple-100/60 flex flex-col items-center"
-    >
-      <h1 className="text-3xl font-bold mb-6 text-purple-700 drop-shadow-lg">All Exams</h1>
-      <div className="w-full max-w-3xl grid gap-6">
-        {mockExams.map((exam) => (
-          <motion.div
-            key={exam.id}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: 'spring', stiffness: 300 }}
-          >
-            <GlassCard className="flex justify-between items-center p-6 cursor-pointer hover:bg-purple-100/40 transition">
-              <div>
-                <div className="text-xl font-semibold text-blue-800">{exam.name}</div>
-                <div className="text-sm text-gray-500">Date: {exam.date}</div>
-              </div>
-              <span className={`px-3 py-1 rounded-full text-xs font-bold ${exam.status === 'Upcoming' ? 'bg-green-200 text-green-800' : 'bg-gray-200 text-gray-700'}`}>{exam.status}</span>
-            </GlassCard>
-          </motion.div>
-        ))}
-      </div>
-    </motion.div>
-  );
-};
+    <div className="min-h-screen relative overflow-hidden">
+      <Helmet>
+        <title>All Exams - Butterflies</title>
+      </Helmet>
+      
+      <AnimatedBackground />
+      <FloatingShapes />
+      
+      <div className="relative z-10 p-6">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="mb-8"
+        >
+          <h1 className="text-3xl font-bold text-white mb-2">All Exams</h1>
+          <p className="text-gray-300">View all your exams in one place</p>
+        </motion.div>
 
-export default TotalExamsPage; 
+        {/* Empty State */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="text-center py-16"
+        >
+          <GlassCard className="p-12 max-w-md mx-auto">
+            <div className="w-24 h-24 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full flex items-center justify-center mx-auto mb-6">
+              <FileText className="w-12 h-12 text-white" />
+            </div>
+            <h3 className="text-2xl font-semibold text-white mb-4">No Exams Available</h3>
+            <p className="text-gray-300 mb-8">
+              You haven't taken any exams yet. All your exams, both completed and upcoming, will appear here once you start taking them.
+            </p>
+            <div className="flex items-center justify-center space-x-2 text-blue-400">
+              <Plus className="w-5 h-5" />
+              <span className="font-medium">Join classes to access exams</span>
+            </div>
+          </GlassCard>
+        </motion.div>
+      </div>
+    </div>
+  );
+}; 

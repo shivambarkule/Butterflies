@@ -10,7 +10,7 @@ import { Helmet } from 'react-helmet-async';
 import { GlassCard } from '@/components/GlassCard';
 import { AnimatedBackground } from '@/components/AnimatedBackground';
 import { FloatingShapes } from '@/components/FloatingShapes';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '../contexts/AuthContext';
 import {
   BookOpen,
   Sparkles,
