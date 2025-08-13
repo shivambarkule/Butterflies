@@ -68,11 +68,10 @@ export const RegisterPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  
   
   const navigate = useNavigate();
-  const { register: authRegister, loginWithGoogle, user } = useAuth() as any;
-  const [googleError, setGoogleError] = useState<string | null>(null);
+  const { register: authRegister, user } = useAuth() as any;
 
   const {
     register,
@@ -103,17 +102,7 @@ export const RegisterPage: React.FC = () => {
     }
   };
 
-  const handleGoogleSignup = async () => {
-    setIsGoogleLoading(true);
-    setGoogleError(null);
-    try {
-      await loginWithGoogle();
-    } catch (error: any) {
-      setGoogleError(error.message || 'Google signup failed. Please try again.');
-    } finally {
-      setIsGoogleLoading(false);
-    }
-  };
+  
 
   const getPasswordStrength = (password: string) => {
     if (!password) return { strength: 0, color: 'bg-gray-300', text: '' };
@@ -249,24 +238,7 @@ export const RegisterPage: React.FC = () => {
                 <p className="text-gray-300">Join the future of learning</p>
               </div>
 
-              {/* Google Signup Button */}
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={handleGoogleSignup}
-                disabled={isGoogleLoading}
-                className="w-full mb-6 px-6 py-3 bg-white/10 backdrop-blur-md rounded-xl border border-glass-200 text-white font-medium hover:bg-white/20 transition-all duration-300 flex items-center justify-center space-x-3 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isGoogleLoading ? (
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                ) : (
-                  <Chrome className="w-5 h-5" />
-                )}
-                <span>{isGoogleLoading ? 'Signing up...' : 'Continue with Google'}</span>
-              </motion.button>
-              {googleError && (
-                <div className="bg-red-100 text-red-700 p-2 rounded mb-4 text-center">{googleError}</div>
-              )}
+              {/* Removed Google Signup Button per request */}
 
               <div className="relative mb-6">
                 <div className="absolute inset-0 flex items-center">

@@ -3,6 +3,8 @@ import {
   auth,
   googleProvider,
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut as firebaseSignOut,
@@ -15,7 +17,19 @@ interface User {
   firstName: string;
   lastName: string;
   studentId: string;
+  username?: string;
+  bio?: string;
   avatar?: string;
+  location?: string;
+  phone?: string;
+  dateOfBirth?: string;
+  interests?: string[];
+  socialLinks?: {
+    twitter?: string;
+    linkedin?: string;
+    github?: string;
+    instagram?: string;
+  };
   gamification: {
     level: number;
     xp: number;
@@ -53,6 +67,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Check for redirect result first
+    const checkRedirectResult = async () => {
+      try {
+        const result = await getRedirectResult(auth);
+        if (result) {
+          console.log('AuthContext: Redirect result found:', result.user);
+        }
+      } catch (error) {
+        console.error('AuthContext: Error checking redirect result:', error);
+      }
+    };
+
+    checkRedirectResult();
+
     // Listen for Firebase Auth state changes
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) {
@@ -103,13 +131,53 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const loginWithGoogle = async () => {
+    console.log('AuthContext: loginWithGoogle called');
+    console.log('AuthContext: Current domain:', window.location.hostname);
+    console.log('AuthContext: Current URL:', window.location.href);
+    
     setLoading(true);
     try {
-      await signInWithPopup(auth, googleProvider);
-      // Navigation will be handled automatically by onAuthStateChanged
-      // and the ProtectedRoute component will redirect to /dashboard
+      console.log('AuthContext: Starting Google sign-in...');
+      
+      // Try popup first
+      try {
+        const result = await signInWithPopup(auth, googleProvider);
+        console.log('AuthContext: Google sign-in successful (popup):', result.user);
+        console.log('AuthContext: User email:', result.user.email);
+        console.log('AuthContext: User display name:', result.user.displayName);
+        return;
+      } catch (popupError: any) {
+        console.warn('AuthContext: Popup sign-in failed, attempting redirect fallback...', popupError);
+        try {
+          await signInWithRedirect(auth, googleProvider);
+          console.log('AuthContext: Redirect initiated');
+          return;
+        } catch (redirectError) {
+          console.error('AuthContext: Redirect sign-in also failed:', redirectError);
+          throw redirectError;
+        }
+      }
     } catch (error: any) {
-      throw new Error(error.message || 'Google sign-in failed');
+      console.error('AuthContext: Google sign-in error:', error);
+      console.error('AuthContext: Error code:', error.code);
+      console.error('AuthContext: Error message:', error.message);
+      console.error('AuthContext: Full error:', error);
+      
+      if (error.code === 'auth/popup-closed-by-user') {
+        throw new Error('Sign-in was cancelled. Please try again.');
+      } else if (error.code === 'auth/popup-blocked') {
+        throw new Error('Pop-up was blocked. Please allow pop-ups for this site and try again.');
+      } else if (error.code === 'auth/operation-not-supported-in-this-environment') {
+        throw new Error('This browser does not support Google popup sign-in. We tried redirect and it failed. Please try a different browser.');
+      } else if (error.code === 'auth/unauthorized-domain') {
+        throw new Error(`Domain '${window.location.hostname}' is not authorized. Please contact support.`);
+      } else if (error.code === 'auth/network-request-failed') {
+        throw new Error('Network error. Please check your internet connection and try again.');
+      } else if (error.code === 'auth/operation-not-allowed') {
+        throw new Error('Google sign-in is not enabled for this project. Please contact support.');
+      } else {
+        throw new Error(error.message || 'Google sign-in failed. Please try again.');
+      }
     } finally {
       setLoading(false);
     }

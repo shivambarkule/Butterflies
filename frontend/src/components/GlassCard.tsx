@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/utils/cn';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface GlassCardProps {
   children: React.ReactNode;
@@ -15,11 +16,12 @@ export const GlassCard: React.FC<GlassCardProps> = ({
   hover = true,
   onClick
 }) => {
+  const { isDark } = useTheme();
+  
   return (
     <motion.div
       className={cn(
-        'relative overflow-hidden rounded-2xl border border-glass-200 bg-glass-100/20 backdrop-blur-xl shadow-glass',
-        hover && 'hover:bg-glass-200/30 hover:border-glass-300 transition-all duration-300',
+        'glass-card relative overflow-hidden',
         onClick && 'cursor-pointer',
         className
       )}
@@ -32,7 +34,10 @@ export const GlassCard: React.FC<GlassCardProps> = ({
       onClick={onClick}
     >
       {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
+      <div className={cn(
+        "absolute inset-0 bg-gradient-to-br pointer-events-none",
+        isDark ? "from-white/5 to-transparent" : "from-gray-50/50 to-transparent"
+      )} />
       
       {/* Content */}
       <div className="relative z-10">
@@ -40,7 +45,10 @@ export const GlassCard: React.FC<GlassCardProps> = ({
       </div>
       
       {/* Shimmer effect */}
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+      <div className={cn(
+        "absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000",
+        isDark ? "via-white/10" : "via-gray-200/20"
+      )} />
     </motion.div>
   );
 }; 

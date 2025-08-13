@@ -18,6 +18,7 @@ interface ThemeContextType {
   setSeason: (season: Season) => void;
   getThemeColors: () => ThemeColors;
   isDark: boolean;
+  toggleTheme: () => void;
 }
 
 interface ThemeColors {
@@ -33,6 +34,14 @@ interface ThemeColors {
   glassBorder: string;
   gradient: string;
   gradientSecondary: string;
+  cardBg: string;
+  cardBorder: string;
+  buttonBg: string;
+  buttonHover: string;
+  inputBg: string;
+  inputBorder: string;
+  shadow: string;
+  shadowHover: string;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -68,16 +77,24 @@ const getThemeColors = (
   weather: Weather,
   subject: Subject
 ): ThemeColors => {
-  // Base colors for dark/light mode
+  // Enhanced base colors for dark/light mode
   const baseColors = {
     dark: {
-      background: '#0f0f23',
+      background: '#0a0a0f',
       surface: '#1a1a2e',
       text: '#ffffff',
       textSecondary: '#a0a0a0',
       border: '#2a2a3e',
       glass: 'rgba(26, 26, 46, 0.8)',
       glassBorder: 'rgba(42, 42, 62, 0.5)',
+      cardBg: '#1a1a2e',
+      cardBorder: '#2a2a3e',
+      buttonBg: '#2a2a3e',
+      buttonHover: '#3a3a4e',
+      inputBg: '#1a1a2e',
+      inputBorder: '#2a2a3e',
+      shadow: '0 4px 6px -1px rgba(0, 0, 0, 0.3)',
+      shadowHover: '0 10px 15px -3px rgba(0, 0, 0, 0.4)',
     },
     light: {
       background: '#f8fafc',
@@ -87,10 +104,18 @@ const getThemeColors = (
       border: '#e2e8f0',
       glass: 'rgba(255, 255, 255, 0.8)',
       glassBorder: 'rgba(226, 232, 240, 0.5)',
+      cardBg: '#ffffff',
+      cardBorder: '#e2e8f0',
+      buttonBg: '#f1f5f9',
+      buttonHover: '#e2e8f0',
+      inputBg: '#ffffff',
+      inputBorder: '#e2e8f0',
+      shadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+      shadowHover: '0 10px 15px -3px rgba(0, 0, 0, 0.15)',
     }
   };
 
-  // Time-based color variations
+  // Enhanced time-based color variations
   const timeColors = {
     morning: {
       primary: '#ff6b6b',
@@ -122,7 +147,7 @@ const getThemeColors = (
     }
   };
 
-  // Seasonal color variations
+  // Enhanced seasonal color variations
   const seasonColors = {
     spring: {
       primary: '#a8e6cf',
@@ -154,7 +179,7 @@ const getThemeColors = (
     }
   };
 
-  // Weather-based color variations
+  // Enhanced weather-based color variations
   const weatherColors = {
     sunny: {
       primary: '#ffe66d',
@@ -193,7 +218,7 @@ const getThemeColors = (
     }
   };
 
-  // Subject-specific color variations
+  // Enhanced subject-specific color variations
   const subjectColors = {
     math: {
       primary: '#667eea',
@@ -246,9 +271,8 @@ const getThemeColors = (
   const weatherTheme = weatherColors[weather];
   const subjectTheme = subjectColors[subject];
 
-  // Blend colors based on theme factors
+  // Enhanced color blending
   const blendColors = (color1: string, color2: string, factor: number = 0.5) => {
-    // Simple color blending - in a real app you'd use a proper color library
     return factor > 0.5 ? color1 : color2;
   };
 
@@ -265,6 +289,14 @@ const getThemeColors = (
     glassBorder: base.glassBorder,
     gradient: subjectTheme.gradient,
     gradientSecondary: time.gradientSecondary,
+    cardBg: base.cardBg,
+    cardBorder: base.cardBorder,
+    buttonBg: base.buttonBg,
+    buttonHover: base.buttonHover,
+    inputBg: base.inputBg,
+    inputBorder: base.inputBorder,
+    shadow: base.shadow,
+    shadowHover: base.shadowHover,
   };
 };
 
@@ -289,11 +321,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setSeason(getSeason());
   }, []);
 
-  // Apply theme to document
+  // Apply theme to document with enhanced CSS custom properties
   useEffect(() => {
     const colors = getThemeColors(mode, timeOfDay, season, weather, subject);
     
-    // Apply CSS custom properties
+    // Apply enhanced CSS custom properties
     document.documentElement.style.setProperty('--color-primary', colors.primary);
     document.documentElement.style.setProperty('--color-secondary', colors.secondary);
     document.documentElement.style.setProperty('--color-accent', colors.accent);
@@ -306,10 +338,23 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     document.documentElement.style.setProperty('--color-glass-border', colors.glassBorder);
     document.documentElement.style.setProperty('--gradient-primary', colors.gradient);
     document.documentElement.style.setProperty('--gradient-secondary', colors.gradientSecondary);
+    document.documentElement.style.setProperty('--color-card-bg', colors.cardBg);
+    document.documentElement.style.setProperty('--color-card-border', colors.cardBorder);
+    document.documentElement.style.setProperty('--color-button-bg', colors.buttonBg);
+    document.documentElement.style.setProperty('--color-button-hover', colors.buttonHover);
+    document.documentElement.style.setProperty('--color-input-bg', colors.inputBg);
+    document.documentElement.style.setProperty('--color-input-border', colors.inputBorder);
+    document.documentElement.style.setProperty('--shadow-default', colors.shadow);
+    document.documentElement.style.setProperty('--shadow-hover', colors.shadowHover);
 
-    // Apply theme class to body
+    // Apply theme class to body with smooth transition
+    document.body.style.transition = 'background-color 0.3s ease, color 0.3s ease';
     document.body.className = `theme-${mode} theme-${timeOfDay} theme-${season} theme-${weather} theme-${subject}`;
   }, [mode, timeOfDay, season, weather, subject]);
+
+  const toggleTheme = () => {
+    setMode(prev => prev === 'dark' ? 'light' : 'dark');
+  };
 
   const value: ThemeContextType = {
     mode,
@@ -323,6 +368,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setSeason,
     getThemeColors: () => getThemeColors(mode, timeOfDay, season, weather, subject),
     isDark: mode === 'dark',
+    toggleTheme,
   };
 
   return (

@@ -756,16 +756,6 @@ export const GamificationSystem: React.FC<GamificationSystemProps> = ({ isOpen, 
 
   return (
     <>
-      {/* Gamification Button */}
-      <motion.button
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        onClick={() => onClose()}
-        className="fixed bottom-6 left-48 z-50 p-4 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
-      >
-        <Trophy className="w-6 h-6 text-white" />
-      </motion.button>
-
       {/* Gamification Modal */}
       <motion.div
         initial={{ opacity: 0 }}

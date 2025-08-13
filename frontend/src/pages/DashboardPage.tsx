@@ -17,8 +17,6 @@ import {
   Sparkles
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import { useTheme } from '../contexts/ThemeContext';
-
 import { GlassCard } from '../components/GlassCard';
 import { AnimatedBackground } from '../components/AnimatedBackground';
 import { FloatingShapes } from '../components/FloatingShapes';
@@ -27,6 +25,8 @@ import { Helmet } from 'react-helmet-async';
 import { toast } from 'react-hot-toast';
 import { MagneticElement } from '../components/MagneticElement';
 import { LoadingSystem } from '../components/LoadingSystem';
+import { NotificationPopup } from '../components/NotificationPopup';
+import { useNotifications } from '../contexts/NotificationContext';
 
 // Mock data - replace with API calls
 const mockStats = {
@@ -44,14 +44,15 @@ export const DashboardPage: React.FC = () => {
   const [joinCode, setJoinCode] = useState('');
   const [joinStatus, setJoinStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [joinMessage, setJoinMessage] = useState('');
-  const [unreadNotifications] = useState(2);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showLoadingDemo, setShowLoadingDemo] = useState(false);
   const [loadingType, setLoadingType] = useState<'subject' | 'progress' | 'success' | 'error'>('subject');
+  const [showNotifications, setShowNotifications] = useState(false);
+  
+  const { unreadCount } = useNotifications();
   
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const { isDark, setMode } = useTheme();
 
   const handleJoinClass = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -125,21 +126,22 @@ export const DashboardPage: React.FC = () => {
       
       {/* Header */}
       <header className="relative z-10 p-6">
-        <div className="flex items-center justify-between">
-          {/* Left - Welcome */}
-          <div className="flex items-center space-x-4">
-            <button 
-              onClick={toggleSidebar}
-              className="p-2 bg-glass-100 backdrop-blur-md rounded-full border border-glass-200 hover:bg-glass-200 transition-all duration-300"
-            >
-              <ChevronLeft className={`w-5 h-5 text-white transition-transform duration-300 ${sidebarOpen ? 'rotate-180' : ''}`} />
-            </button>
-            <div>
-              <h1 className="text-2xl font-bold text-white">
-                Welcome back, {user?.firstName || 'Student'}! 👋
-              </h1>
-              <p className="text-gray-300">Ready to ace your next exam?</p>
-            </div>
+        <div className="glass-header p-6">
+          <div className="flex items-center justify-between">
+            {/* Left - Welcome */}
+            <div className="flex items-center space-x-4">
+              <button 
+                onClick={toggleSidebar}
+                className="glass-button p-2"
+              >
+                <ChevronLeft className={`w-5 h-5 text-white transition-transform duration-300 ${sidebarOpen ? 'rotate-180' : ''}`} />
+              </button>
+              <div>
+                <h1 className="text-2xl font-bold text-white">
+                  Welcome back, {user?.firstName || 'Student'}! 👋
+                </h1>
+                <p className="text-gray-300">Ready to ace your next exam?</p>
+              </div>
             {/* Double-clickable Logo */}
             <div
               className="ml-4 cursor-pointer relative group"
@@ -171,23 +173,21 @@ export const DashboardPage: React.FC = () => {
           
           {/* Right - Notifications & Theme */}
           <div className="flex items-center space-x-4">
-            <button className="relative p-2 bg-glass-100 backdrop-blur-md rounded-full border border-glass-200 hover:bg-glass-200 transition-all duration-300">
+            <button 
+              onClick={() => setShowNotifications(true)}
+              className="relative glass-button p-2"
+            >
               <Bell className="w-5 h-5 text-white" />
-              {unreadNotifications > 0 && (
+              {unreadCount > 0 && (
                 <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
-                  {unreadNotifications}
+                  {unreadCount}
                 </span>
               )}
             </button>
-            <button 
-              onClick={() => setMode(isDark ? 'light' : 'dark')}
-              className="p-2 bg-glass-100 backdrop-blur-md rounded-full border border-glass-200 hover:bg-glass-200 transition-all duration-300"
-            >
-              <Lightbulb className="w-5 h-5 text-white" />
-            </button>
+
             <button 
               onClick={handleLogout}
-              className="p-2 bg-glass-100 backdrop-blur-md rounded-full border border-glass-200 hover:bg-glass-200 transition-all duration-300"
+              className="glass-button p-2"
             >
               <LogOut className="w-5 h-5 text-white" />
             </button>
@@ -197,7 +197,7 @@ export const DashboardPage: React.FC = () => {
                 setShowLoadingDemo(true);
                 setTimeout(() => setShowLoadingDemo(false), 3000);
               }}
-              className="p-2 bg-glass-100 backdrop-blur-md rounded-full border border-glass-200 hover:bg-glass-200 transition-all duration-300"
+              className="glass-button p-2"
               title="Test Subject Loader"
             >
               <BookOpen className="w-5 h-5 text-white" />
@@ -208,7 +208,7 @@ export const DashboardPage: React.FC = () => {
                 setShowLoadingDemo(true);
                 setTimeout(() => setShowLoadingDemo(false), 3000);
               }}
-              className="p-2 bg-glass-100 backdrop-blur-md rounded-full border border-glass-200 hover:bg-glass-200 transition-all duration-300"
+              className="glass-button p-2"
               title="Test Success Animation"
             >
               <Target className="w-5 h-5 text-white" />
@@ -244,6 +244,7 @@ export const DashboardPage: React.FC = () => {
               <Users className="w-5 h-5 text-white" />
             </button>
           </div>
+        </div>
         </div>
       </header>
 
@@ -320,7 +321,7 @@ export const DashboardPage: React.FC = () => {
           {/* Left Column - Stats */}
           <div className="lg:col-span-1 space-y-6">
             {/* Total Classes Card */}
-            <MagneticElement strength={0.15}>
+            <MagneticElement strength={0.025}>
               <GlassCard className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -335,7 +336,7 @@ export const DashboardPage: React.FC = () => {
             </MagneticElement>
 
             {/* Total Exams Card */}
-            <MagneticElement strength={0.15}>
+            <MagneticElement strength={0.025}>
               <GlassCard className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -350,7 +351,7 @@ export const DashboardPage: React.FC = () => {
             </MagneticElement>
 
             {/* Upcoming Exams Card */}
-            <MagneticElement strength={0.15}>
+            <MagneticElement strength={0.025}>
               <GlassCard className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -375,7 +376,7 @@ export const DashboardPage: React.FC = () => {
             {mockJoinedClasses.length > 0 ? (
               <div className="grid gap-4">
                 {mockJoinedClasses.map((classItem, index) => (
-                  <MagneticElement key={classItem.id} strength={0.2}>
+                  <MagneticElement key={classItem.id} strength={0.04}>
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -428,7 +429,7 @@ export const DashboardPage: React.FC = () => {
                 ))}
               </div>
             ) : (
-              <MagneticElement strength={0.2}>
+              <MagneticElement strength={0.04}>
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -453,7 +454,7 @@ export const DashboardPage: React.FC = () => {
           {/* Right Column - Join Class */}
           <div className="lg:col-span-1">
             {/* Join Class Card */}
-            <MagneticElement strength={0.15}>
+            <MagneticElement strength={0.025}>
               <GlassCard className="p-6">
                 <div className="flex items-center space-x-2 mb-4">
                   <Plus className="w-5 h-5 text-blue-400" />
@@ -467,7 +468,7 @@ export const DashboardPage: React.FC = () => {
                       placeholder="Enter class code"
                       value={joinCode}
                       onChange={(e) => setJoinCode(e.target.value)}
-                      className="w-full px-4 py-3 bg-glass-100 backdrop-blur-md border border-glass-200 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 transition-all duration-300"
+                      className="glass-input w-full px-4 py-3 text-white placeholder-gray-400 focus:outline-none transition-all duration-300"
                       disabled={joinStatus === 'loading'}
                     />
                   </div>
@@ -504,7 +505,7 @@ export const DashboardPage: React.FC = () => {
             </MagneticElement>
 
             {/* Smart Study Tools Card */}
-            <MagneticElement strength={0.2} className="mt-6">
+            <MagneticElement strength={0.04} className="mt-6">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -553,6 +554,12 @@ export const DashboardPage: React.FC = () => {
         </div>
       </main>
       <LoadingSystem isLoading={showLoadingDemo} type={loadingType} />
+      
+      {/* Notification Popup */}
+      <NotificationPopup 
+        isOpen={showNotifications} 
+        onClose={() => setShowNotifications(false)} 
+      />
     </div>
   );
 }; 

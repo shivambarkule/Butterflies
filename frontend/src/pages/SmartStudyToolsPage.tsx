@@ -134,7 +134,7 @@ export const SmartStudyToolsPage: React.FC = () => {
       
       <div className="relative z-10 p-6">
         {/* Header */}
-        <MagneticElement strength={0.1}>
+        <MagneticElement strength={0.025}>
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -178,7 +178,7 @@ export const SmartStudyToolsPage: React.FC = () => {
         {/* Tools Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {tools.map((tool, index) => (
-            <MagneticElement key={tool.id} strength={0.2}>
+            <MagneticElement key={tool.id} strength={0.05}>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -217,7 +217,7 @@ export const SmartStudyToolsPage: React.FC = () => {
         </div>
 
         {/* Study Tips */}
-        <MagneticElement strength={0.1}>
+        <MagneticElement strength={0.025}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

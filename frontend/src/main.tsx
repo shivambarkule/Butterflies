@@ -10,6 +10,7 @@ import { Toaster } from 'react-hot-toast';
 import App from './App';
 import { AuthProvider } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { SeasonalThemeProvider } from './contexts/SeasonalThemeContext';
 import { ErrorFallback } from './components/ErrorFallback';
 import './styles/globals.css';
 
@@ -35,9 +36,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
             <ThemeProvider>
-              <AuthProvider>
-                <App />
-                <Toaster
+              <SeasonalThemeProvider>
+                <AuthProvider>
+                  <App />
+                  <Toaster
                   position="top-right"
                   toastOptions={{
                     duration: 4000,
@@ -60,8 +62,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                       },
                     },
                   }}
-                />
-              </AuthProvider>
+                                  />
+                </AuthProvider>
+              </SeasonalThemeProvider>
             </ThemeProvider>
           </BrowserRouter>
           {process.env.NODE_ENV === 'development' && (

@@ -4,10 +4,20 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Focus mode dims non-essential UI */
+.focus-mode *:not(.study-essential):not(.study-essential *) {
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+.focus-mode .study-nonessential {
+  opacity: 0.15 !important;
+  filter: blur(1px);
+  pointer-events: none;
+}
+
 /* Custom CSS Variables */
 :root {
-  --glass-bg: rgba(255, 255, 255, 0.1);
-  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-bg: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.15);
   --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   --neon-glow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor;
   
@@ -24,6 +34,26 @@
   --color-glass-border: rgba(42, 42, 62, 0.5);
   --gradient-primary: from-purple-400 to-pink-400;
   --gradient-secondary: from-pink-400 to-indigo-400;
+  
+  /* Enhanced theme variables */
+  --color-card-bg: #1a1a2e;
+  --color-card-border: #2a2a3e;
+  --color-button-bg: #2a2a3e;
+  --color-button-hover: #3a3a4e;
+  --color-input-bg: #1a1a2e;
+  --color-input-border: #2a2a3e;
+  --shadow-default: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+  
+  /* Enhanced glassmorphism variables */
+  --glass-bg-light: rgba(255, 255, 255, 0.1);
+  --glass-bg-medium: rgba(255, 255, 255, 0.15);
+  --glass-bg-heavy: rgba(255, 255, 255, 0.2);
+  --glass-border-light: rgba(255, 255, 255, 0.2);
+  --glass-border-medium: rgba(255, 255, 255, 0.25);
+  --glass-shadow-light: 0 4px 15px rgba(0, 0, 0, 0.1);
+  --glass-shadow-medium: 0 8px 25px rgba(0, 0, 0, 0.15);
+  --glass-shadow-heavy: 0 12px 35px rgba(0, 0, 0, 0.2);
 }
 
 /* Base Styles */
@@ -63,30 +93,94 @@ body {
   background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
 }
 
-/* Glassmorphism Components */
+/* Enhanced Glassmorphism Components */
 @layer components {
   .glass {
     background: var(--glass-bg);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(25px);
     border: 1px solid var(--glass-border);
     box-shadow: var(--glass-shadow);
   }
   
+  .glass-light {
+    background: var(--glass-bg-light);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border-light);
+    box-shadow: var(--glass-shadow-light);
+  }
+  
+  .glass-medium {
+    background: var(--glass-bg-medium);
+    backdrop-filter: blur(25px);
+    border: 1px solid var(--glass-border-medium);
+    box-shadow: var(--glass-shadow-medium);
+  }
+  
+  .glass-heavy {
+    background: var(--glass-bg-heavy);
+    backdrop-filter: blur(30px);
+    border: 1px solid var(--glass-border-medium);
+    box-shadow: var(--glass-shadow-heavy);
+  }
+  
   .glass-card {
-    @apply relative overflow-hidden rounded-2xl border border-glass-200 bg-glass-100/20 backdrop-blur-xl shadow-glass;
+    @apply relative overflow-hidden rounded-2xl border backdrop-blur-xl transition-all duration-300;
+    background: var(--season-glass, rgba(255, 255, 255, 0.08));
+    border: 1px solid var(--season-glass-border, rgba(255, 255, 255, 0.15));
+    box-shadow: var(--season-shadow, 0 8px 32px rgba(0, 0, 0, 0.2));
+  }
+  
+  .glass-card:hover {
+    background: var(--season-glass, rgba(255, 255, 255, 0.12));
+    border-color: var(--season-glass-border, rgba(255, 255, 255, 0.25));
+    box-shadow: var(--season-shadow-hover, 0 12px 40px rgba(0, 0, 0, 0.3));
+    transform: translateY(-2px);
+  }
+  
+
+  
+  .glass-header {
+    @apply relative overflow-hidden rounded-2xl border backdrop-blur-2xl;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  }
+  
+  .glass-button {
+    @apply px-6 py-3 backdrop-blur-md rounded-full border text-white font-medium transition-all duration-300;
+    background: var(--season-glass, rgba(255, 255, 255, 0.1));
+    border: 1px solid var(--season-glass-border, rgba(255, 255, 255, 0.2));
+    box-shadow: var(--season-shadow, 0 4px 15px rgba(0, 0, 0, 0.1));
+  }
+  
+  .glass-button:hover {
+    background: var(--season-glass, rgba(255, 255, 255, 0.15));
+    border-color: var(--season-glass-border, rgba(255, 255, 255, 0.3));
+    box-shadow: var(--season-shadow-hover, 0 6px 20px rgba(0, 0, 0, 0.15));
+    transform: translateY(-1px);
+  }
+  
+
+  
+  .glass-input {
+    @apply backdrop-blur-md rounded-lg border transition-all duration-300;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+  
+  .glass-input:focus {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
   }
   
   /* Dynamic gradient classes */
   .bg-gradient-dynamic {
-    background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
   }
   
   .bg-gradient-dynamic-secondary {
-    background: linear-gradient(to right, var(--color-secondary), var(--color-accent));
-  }
-  
-  .glass-button {
-    @apply px-6 py-3 bg-glass-100/20 backdrop-blur-md rounded-full border border-glass-200 text-white font-medium hover:bg-glass-200/30 hover:border-glass-300 transition-all duration-300;
+    background: linear-gradient(135deg, var(--color-secondary), var(--color-accent));
   }
   
   .gradient-text {
@@ -99,6 +193,15 @@ body {
   
   .neon-glow-lg {
     box-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
+  }
+  
+  /* Gradient overlays */
+  .gradient-overlay {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+  }
+  
+  .gradient-overlay-secondary {
+    background: linear-gradient(135deg, rgba(240, 147, 251, 0.1), rgba(102, 126, 234, 0.1));
   }
 }
 
@@ -285,6 +388,143 @@ body {
   .text-responsive-xl {
     font-size: clamp(2rem, 8vw, 3.5rem);
   }
+}
+
+/* Enhanced Dark Mode Styles */
+.theme-dark {
+  --glass-bg: rgba(0, 0, 0, 0.2);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  
+  /* Dark mode specific colors */
+  --color-background: #0a0a0f;
+  --color-surface: #1a1a2e;
+  --color-text: #ffffff;
+  --color-text-secondary: #a0a0a0;
+  --color-border: #2a2a3e;
+  --color-glass: rgba(26, 26, 46, 0.8);
+  --color-glass-border: rgba(42, 42, 62, 0.5);
+  --color-card-bg: #1a1a2e;
+  --color-card-border: #2a2a3e;
+  --color-button-bg: #2a2a3e;
+  --color-button-hover: #3a3a4e;
+  --color-input-bg: #1a1a2e;
+  --color-input-border: #2a2a3e;
+  --shadow-default: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+}
+
+/* Seasonal Theme Styles */
+.season-spring {
+  --glass-bg: rgba(34, 197, 94, 0.1);
+  --glass-border: rgba(74, 222, 128, 0.2);
+  --glass-shadow: 0 8px 32px 0 rgba(34, 197, 94, 0.3);
+  
+  --color-background: #0f172a;
+  --color-surface: #1e293b;
+  --color-text: #ffffff;
+  --color-text-secondary: #cbd5e1;
+  --color-border: #334155;
+  --color-glass: rgba(34, 197, 94, 0.1);
+  --color-glass-border: rgba(74, 222, 128, 0.2);
+  --color-card-bg: #1e293b;
+  --color-card-border: #334155;
+  --color-button-bg: #334155;
+  --color-button-hover: #475569;
+  --color-input-bg: #1e293b;
+  --color-input-border: #334155;
+  --shadow-default: 0 4px 6px -1px rgba(34, 197, 94, 0.2);
+  --shadow-hover: 0 10px 15px -3px rgba(34, 197, 94, 0.3);
+}
+
+.season-summer {
+  --glass-bg: rgba(251, 191, 36, 0.1);
+  --glass-border: rgba(245, 158, 11, 0.2);
+  --glass-shadow: 0 8px 32px 0 rgba(251, 191, 36, 0.3);
+  
+  --color-background: #0f172a;
+  --color-surface: #1e293b;
+  --color-text: #ffffff;
+  --color-text-secondary: #cbd5e1;
+  --color-border: #334155;
+  --color-glass: rgba(251, 191, 36, 0.1);
+  --color-glass-border: rgba(245, 158, 11, 0.2);
+  --color-card-bg: #1e293b;
+  --color-card-border: #334155;
+  --color-button-bg: #334155;
+  --color-button-hover: #475569;
+  --color-input-bg: #1e293b;
+  --color-input-border: #334155;
+  --shadow-default: 0 4px 6px -1px rgba(251, 191, 36, 0.2);
+  --shadow-hover: 0 10px 15px -3px rgba(251, 191, 36, 0.3);
+}
+
+.season-autumn {
+  --glass-bg: rgba(249, 115, 22, 0.1);
+  --glass-border: rgba(234, 88, 12, 0.2);
+  --glass-shadow: 0 8px 32px 0 rgba(249, 115, 22, 0.3);
+  
+  --color-background: #0f172a;
+  --color-surface: #1e293b;
+  --color-text: #ffffff;
+  --color-text-secondary: #cbd5e1;
+  --color-border: #334155;
+  --color-glass: rgba(249, 115, 22, 0.1);
+  --color-glass-border: rgba(234, 88, 12, 0.2);
+  --color-card-bg: #1e293b;
+  --color-card-border: #334155;
+  --color-button-bg: #334155;
+  --color-button-hover: #475569;
+  --color-input-bg: #1e293b;
+  --color-input-border: #334155;
+  --shadow-default: 0 4px 6px -1px rgba(249, 115, 22, 0.2);
+  --shadow-hover: 0 10px 15px -3px rgba(249, 115, 22, 0.3);
+}
+
+.season-winter {
+  --glass-bg: rgba(96, 165, 250, 0.1);
+  --glass-border: rgba(59, 130, 246, 0.2);
+  --glass-shadow: 0 8px 32px 0 rgba(96, 165, 250, 0.3);
+  
+  --color-background: #0f172a;
+  --color-surface: #1e293b;
+  --color-text: #ffffff;
+  --color-text-secondary: #cbd5e1;
+  --color-border: #334155;
+  --color-glass: rgba(96, 165, 250, 0.1);
+  --color-glass-border: rgba(59, 130, 246, 0.2);
+  --color-card-bg: #1e293b;
+  --color-card-border: #334155;
+  --color-button-bg: #334155;
+  --color-button-hover: #475569;
+  --color-input-bg: #1e293b;
+  --color-input-border: #334155;
+  --shadow-default: 0 4px 6px -1px rgba(96, 165, 250, 0.2);
+  --shadow-hover: 0 10px 15px -3px rgba(96, 165, 250, 0.3);
+}
+
+/* Light Mode Styles */
+.theme-light {
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  
+  /* Light mode specific colors */
+  --color-background: #f8fafc;
+  --color-surface: #ffffff;
+  --color-text: #1a1a2e;
+  --color-text-secondary: #64748b;
+  --color-border: #e2e8f0;
+  --color-glass: rgba(255, 255, 255, 0.8);
+  --color-glass-border: rgba(226, 232, 240, 0.5);
+  --color-card-bg: #ffffff;
+  --color-card-border: #e2e8f0;
+  --color-button-bg: #f1f5f9;
+  --color-button-hover: #e2e8f0;
+  --color-input-bg: #ffffff;
+  --color-input-border: #e2e8f0;
+  --shadow-default: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.15);
 }
 
 /* Dark Mode Enhancements */

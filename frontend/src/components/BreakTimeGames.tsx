@@ -325,7 +325,7 @@ export const BreakTimeGames: React.FC<BreakTimeGamesProps> = ({ onClose }) => {
           case 'typing':
             setTypingTime(prev => {
               if (prev <= 1) {
-                endGame('typing', typingWPM, 0);
+                endGame('typing', typingScore, 0);
                 return 0;
               }
               return prev - 1;

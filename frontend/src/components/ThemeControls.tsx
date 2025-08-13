@@ -22,22 +22,43 @@ import {
   Star,
   Target
 } from 'lucide-react';
-import { useTheme } from '../contexts/ThemeContext';
+import { useTheme, type Season, type Weather, type Subject } from '../contexts/ThemeContext';
+import { useSeasonalTheme } from '../contexts/SeasonalThemeContext';
 import { GlassCard } from './GlassCard';
 
 export const ThemeControls: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const { 
     mode, 
     timeOfDay, 
-    season, 
     weather, 
     subject, 
-    setMode, 
+    toggleTheme, 
     setWeather, 
-    setSeason, 
     setSubject 
   } = useTheme();
+  const { currentSeason, setSeason: setSeasonalSeason } = useSeasonalTheme();
+
+  const handleSeasonChange = (season: Season) => {
+    setSeasonalSeason(season);
+    showSuccessMessage();
+  };
+
+  const handleWeatherChange = (weather: Weather) => {
+    setWeather(weather);
+    showSuccessMessage();
+  };
+
+  const handleSubjectChange = (subject: Subject) => {
+    setSubject(subject);
+    showSuccessMessage();
+  };
+
+  const showSuccessMessage = () => {
+    setShowSuccess(true);
+    setTimeout(() => setShowSuccess(false), 2000);
+  };
 
   const weatherOptions = [
     { value: 'sunny', label: 'Sunny', icon: Sun, color: 'from-yellow-400 to-orange-400' },
@@ -123,6 +144,25 @@ export const ThemeControls: React.FC = () => {
                   </button>
                 </div>
 
+                {/* Success Notification */}
+                <AnimatePresence>
+                  {showSuccess && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      className="mb-4 p-3 bg-green-500/20 border border-green-400 rounded-lg"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                        <span className="text-green-400 text-sm font-medium">
+                          Theme updated successfully!
+                        </span>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
                 <div className="space-y-6">
                   {/* Score Display */}
                   <div>
@@ -202,31 +242,25 @@ export const ThemeControls: React.FC = () => {
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        onClick={() => setMode('light')}
+                        onClick={() => toggleTheme()}
                         className={`flex-1 p-4 rounded-lg border-2 transition-all duration-300 ${
                           mode === 'light'
                             ? 'border-blue-400 bg-blue-400/20'
-                            : 'border-gray-600 hover:border-gray-500'
+                            : 'border-purple-400 bg-purple-400/20'
                         }`}
                       >
                         <div className="flex items-center justify-center space-x-2">
-                          <Sun className="w-5 h-5 text-white" />
-                          <span className="text-white font-medium">Light</span>
-                        </div>
-                      </motion.button>
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => setMode('dark')}
-                        className={`flex-1 p-4 rounded-lg border-2 transition-all duration-300 ${
-                          mode === 'dark'
-                            ? 'border-purple-400 bg-purple-400/20'
-                            : 'border-gray-600 hover:border-gray-500'
-                        }`}
-                      >
-                        <div className="flex items-center justify-center space-x-2">
-                          <Moon className="w-5 h-5 text-white" />
-                          <span className="text-white font-medium">Dark</span>
+                          {mode === 'light' ? (
+                            <>
+                              <Sun className="w-5 h-5 text-white" />
+                              <span className="text-white font-medium">Light</span>
+                            </>
+                          ) : (
+                            <>
+                              <Moon className="w-5 h-5 text-white" />
+                              <span className="text-white font-medium">Dark</span>
+                            </>
+                          )}
                         </div>
                       </motion.button>
                     </div>
@@ -257,7 +291,7 @@ export const ThemeControls: React.FC = () => {
                           key={option.value}
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
-                          onClick={() => setWeather(option.value as any)}
+                          onClick={() => handleWeatherChange(option.value as any)}
                           className={`p-3 rounded-lg border-2 transition-all duration-300 ${
                             weather === option.value
                               ? 'border-blue-400 bg-blue-400/20'
@@ -284,9 +318,9 @@ export const ThemeControls: React.FC = () => {
                           key={option.value}
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
-                          onClick={() => setSeason(option.value as any)}
+                          onClick={() => handleSeasonChange(option.value as any)}
                           className={`p-3 rounded-lg border-2 transition-all duration-300 ${
-                            season === option.value
+                            currentSeason === option.value
                               ? 'border-green-400 bg-green-400/20'
                               : 'border-gray-600 hover:border-gray-500'
                           }`}
@@ -311,7 +345,7 @@ export const ThemeControls: React.FC = () => {
                           key={option.value}
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
-                          onClick={() => setSubject(option.value as any)}
+                          onClick={() => handleSubjectChange(option.value as any)}
                           className={`p-3 rounded-lg border-2 transition-all duration-300 ${
                             subject === option.value
                               ? 'border-purple-400 bg-purple-400/20'
@@ -348,7 +382,7 @@ export const ThemeControls: React.FC = () => {
                         </div>
                         <div>
                           <span className="text-gray-300">Season:</span>
-                          <span className="text-white ml-2 capitalize">{season}</span>
+                          <span className="text-white ml-2 capitalize">{currentSeason}</span>
                         </div>
                         <div>
                           <span className="text-gray-300">Subject:</span>

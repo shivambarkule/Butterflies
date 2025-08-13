@@ -43,15 +43,15 @@ const DEVELOPER_CREDITS = [
   { name: "Product Manager", role: "Feature Architect", emoji: "🏗️" }
 ];
 
-export const EasterEggs: React.FC<EasterEggsProps> = ({ onClose }) => {
-  const { playSfx, playNotification } = useSound();
+export const EasterEggs: React.FC<EasterEggsProps> = () => {
+  const { playNotification } = useSound();
   const [konamiProgress, setKonamiProgress] = useState(0);
   const [matrixMode, setMatrixMode] = useState(false);
   const [matrixChars, setMatrixChars] = useState<MatrixCharacter[]>([]);
   const [cheatDetected, setCheatDetected] = useState(false);
   const [showCredits, setShowCredits] = useState(false);
   const [motivationalMessage, setMotivationalMessage] = useState('');
-  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [soundEnabled] = useState(true);
   const [easterEggs, setEasterEggs] = useState<string[]>([]);
   const [showEasterEggs, setShowEasterEggs] = useState(false);
 
